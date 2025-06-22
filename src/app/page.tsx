@@ -10,12 +10,12 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-between py-4">
             <div className="flex items-center space-x-4">
-              <Image 
-                src="/logo.png" 
-                alt="Sarkari Result Logo" 
-                width={64}
-                height={64}
-                className="h-16 w-16 rounded-full bg-white p-2"
+              <Image
+                src="/logo.png"
+                alt="Sarkari Result Logo"
+                width={100}
+                height={100}
+                className="h-16 w-16 rounded-full bg-white p-0.5"
               />
               <div>
                 <h1 className="text-2xl font-bold">SARKARI RESULT</h1>
@@ -32,7 +32,7 @@ export default function Home() {
           <ul className="flex flex-wrap justify-center">
             {['Home', 'Latest Jobs', 'Results', 'Admit Card', 'Answer Key', 'Syllabus', 'Search', 'Contact Us'].map((item) => (
               <li key={item}>
-                <Link 
+                <Link
                   href={`/${item.toLowerCase().replace(' ', '-')}`}
                   className="block px-6 py-4 hover:bg-blue-800 transition-colors duration-200"
                 >
@@ -228,124 +228,19 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* Additional Sections Row */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6"> */}
-          {/* Answer Key */}
-          {/* <div className="bg-white rounded-lg shadow-md">
-            <div className="bg-purple-700 text-white text-center py-3 rounded-t-lg">
-              <h3 className="font-semibold">Answer Key</h3>
-            </div>
-            <div className="p-4">
-              <ul className="space-y-2 text-xs">
-                {[
-                  { title: 'Bihar BSSTET 2023 Answer Key', slug: 'bihar-bsstet-2023-answer-key' },
-                  { title: 'BPSC Agriculture Various Post OMR Sheet 2025', slug: 'bpsc-agriculture-omr-sheet-2025' },
-                  { title: 'NTA JEEMAIN April 2025 Answer Key', slug: 'nta-jeemain-april-2025-answer-key' },
-                  { title: 'DSSSB March 2025 Exam Answer Key', slug: 'dsssb-march-2025-answer-key' }
-                ].map((key, index) => (
-                  <li key={index} className="border-b border-gray-200 pb-1">
-                    <Link href={`/answer-key/${key.slug}`} className="text-blue-600 hover:underline">
-                      {key.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <div className="text-center mt-3">
-                <Link href="/answer-key" className="text-blue-600 hover:underline text-xs font-semibold">
-                  View More
-                </Link>
-              </div>
-            </div>
-          </div> */}
-
-          {/* Certificate Verification */}
-          {/* <div className="bg-white rounded-lg shadow-md">
-            <div className="bg-orange-700 text-white text-center py-3 rounded-t-lg">
-              <h3 className="font-semibold">Certificate Verification</h3>
-            </div>
-            <div className="p-4">
-              <ul className="space-y-2 text-xs">
-                {[
-                  { title: 'NTA UGC NET December 2023 E Certificate', slug: 'nta-ugc-net-december-2023-e-certificate' },
-                  { title: 'UPSSSC PET 2023 Certificate', slug: 'upsssc-pet-2023-certificate' },
-                  { title: 'Voter ID Online Form 2025, E EPIC Download', slug: 'voter-id-online-form-2025' },
-                  { title: 'Aadhar Pan Card Link Online or Check Status 2023', slug: 'aadhar-pan-card-link-2023' }
-                ].map((cert, index) => (
-                  <li key={index} className="border-b border-gray-200 pb-1">
-                    <Link href={`/certificate/${cert.slug}`} className="text-blue-600 hover:underline">
-                      {cert.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <div className="text-center mt-3">
-                <Link href="/certificate-verification" className="text-blue-600 hover:underline text-xs font-semibold">
-                  View More
-                </Link>
-              </div>
-            </div>
-          </div> */}
-
-          {/* Syllabus */}
-          {/* <div className="bg-white rounded-lg shadow-md">
-            <div className="bg-teal-700 text-white text-center py-3 rounded-t-lg">
-              <h3 className="font-semibold">Syllabus</h3>
-            </div>
-            <div className="p-4">
-              <ul className="space-y-2 text-xs">
-                {[
-                  { title: 'UP Police Constable Syllabus 2025', slug: 'up-police-constable-syllabus-2025' },
-                  { title: 'UP Police Computer Operator, Programmer Syllabus 2025', slug: 'up-police-computer-operator-syllabus-2025' },
-                  { title: 'UP Police SI / ASI Syllabus 2025', slug: 'up-police-si-asi-syllabus-2025' },
-                  { title: 'UPSSSC Stenographer Syllabus 2023', slug: 'upsssc-stenographer-syllabus-2023' },
-                  { title: 'NEET UG 2025 Syllabus', slug: 'neet-ug-2025-syllabus' }
-                ].map((syll, index) => (
-                  <li key={index} className="border-b border-gray-200 pb-1">
-                    <Link href={`/syllabus/${syll.slug}`} className="text-blue-600 hover:underline">
-                      {syll.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <div className="text-center mt-3">
-                <Link href="/syllabus" className="text-blue-600 hover:underline text-xs font-semibold">
-                  View More
-                </Link>
-              </div>
-            </div>
-          </div> */}
-
-          {/* Important */}
-          {/* <div className="bg-white rounded-lg shadow-md">
-            <div className="bg-red-700 text-white text-center py-3 rounded-t-lg">
-              <h3 className="font-semibold">Important</h3>
-            </div>
-            <div className="p-4">
-              <ul className="space-y-2 text-xs">
-                {[
-                  { title: 'SSC OTR Online Form 2025', slug: 'ssc-otr-online-form-2025' },
-                  { title: 'UP Scholarship Online Form 2023', slug: 'up-scholarship-online-form-2023' },
-                  { title: 'Sahara Refund Portal Online Registration 2023', slug: 'sahara-refund-portal-2023' },
-                  { title: 'UP Family ID Ek Parivar Ek Pahchan Online Registration 2023', slug: 'up-family-id-registration-2023' },
-                  { title: 'UPPSC One Time Registration OTR Online Form 2023', slug: 'uppsc-otr-online-form-2023' }
-                ].map((imp, index) => (
-                  <li key={index} className="border-b border-gray-200 pb-1">
-                    <Link href={`/important/${imp.slug}`} className="text-blue-600 hover:underline">
-                      {imp.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <div className="text-center mt-3">
-                <Link href="/important" className="text-blue-600 hover:underline text-xs font-semibold">
-                  View More
-                </Link>
-              </div>
-            </div>
-          </div> */}
-        {/* </div> */}
       </div>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-6 mt-8">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <p className="text-sm">
+            © {new Date().getFullYear()} SarkariResult.com. All Rights Reserved.
+          </p>
+          <p className="text-xs mt-1">
+            Made with ❤️ for students and job seekers in India.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
