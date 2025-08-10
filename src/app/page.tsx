@@ -19,7 +19,7 @@ export default function Home() {
               />
               <div>
                 <h1 className="text-2xl font-bold">SARKARI RESULT</h1>
-                <p className="text-sm">WWW.SARKARIRESULT.COM</p>
+                <p className="text-sm">sarkariresultgov.live</p>
               </div>
             </div>
           </div>
@@ -234,7 +234,7 @@ export default function Home() {
       <footer className="bg-gray-800 text-white py-6 mt-8">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <p className="text-sm">
-            © {new Date().getFullYear()} SarkariResult.com. All Rights Reserved.
+            © {new Date().getFullYear()} sarkariresultgov.live All Rights Reserved.
           </p>
           <p className="text-xs mt-1">
             Made with ❤️ for students and job seekers in India.
