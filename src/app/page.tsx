@@ -1,8 +1,49 @@
-import React from 'react';
+"use client"
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+interface Job {
+  id: number;
+  title: string;
+  description: string;
+  apply_url: string;
+  date_posted: string;
+}
+
 export default function Home() {
+
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch jobs from API
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}` + '/jobs/getAllJobs');
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const jobsData: Job[] = await response.json();
+        setJobs(jobsData);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching jobs:', err);
+        setError('Failed to fetch jobs');
+        // Fallback to static data if API fails
+        setJobs([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
@@ -49,19 +90,17 @@ export default function Home() {
         {/* Page Title */}
         <div className="text-center mb-6">
           <h1 className="text-xl font-bold text-gray-800 mb-2">
-            Sarkari Result : SarkariResult.Com Sarkari Naukri Latest Jobs Online Form at Sarkari Results 2025
+            Sarkari Result : SarkariResultGov.live Sarkari Naukri Latest Jobs Online Form at Sarkari Results {new Date().getFullYear()}
           </h1>
           <h2 className="text-lg font-semibold">
-            <span className="text-red-600">Welcome to No. 1 Education Portal Sarkari Result 2025</span>
+            <span className="text-red-600">Welcome to No. 1 Education Portal Sarkari Result {new Date().getFullYear()}</span>
           </h2>
         </div>
 
         {/* App Links */}
         <div className="text-center mb-4 text-sm">
-          <Link href="/android-app" className="text-blue-600 hover:underline mx-2">Sarkari Result Android Apps</Link> ||
-          <Link href="/youtube" className="text-blue-600 hover:underline mx-2">Sarkari Result Youtube Channel</Link> ||
-          <Link href="/ios-app" className="text-blue-600 hover:underline mx-2">Sarkari Result Apple / IOS Apps</Link> ||
-          <Link href="/instagram" className="text-blue-600 hover:underline mx-2">Follow Instagram</Link>
+          <Link href="https://www.instagram.com/sarkariresultgov.live/" className="text-blue-600 hover:underline mx-2">Sarkari Result Instagram</Link> ||
+          <Link href="https://t.me/sarkariresultpath" className="text-blue-600 hover:underline mx-2">Sarkari Result Telegram</Link>
         </div>
 
         {/* Marquee Announcements */}
@@ -184,47 +223,52 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Latest Jobs Section */}
+          {/* Latest Jobs Section - Updated with API Integration */}
           <div className="bg-white rounded-lg shadow-md">
             <div className="bg-blue-700 text-white text-center py-3 rounded-t-lg">
               <h2 className="text-lg font-semibold">Latest Jobs</h2>
             </div>
             <div className="p-4 max-h-96 overflow-y-auto">
-              <ul className="space-y-2 text-sm">
-                {[
-                  { title: 'IIT Jodhpur Non Teaching Various Post Online Form 2025', slug: 'iit-jodhpur-non-teaching-2025' },
-                  { title: 'NTA CSIR UGC NET Online Form 2025', slug: 'nta-csir-ugc-net-2025' },
-                  { title: 'UPSSSC Technical Assistant Group C Online Form 2025', slug: 'upsssc-technical-assistant-2025' },
-                  { title: 'NVS Non Teaching Various Post Online Form 2025 Extended', slug: 'nvs-non-teaching-2025-extended' },
-                  { title: 'BSEB Bihar Sakshamta Pariksha II Online Form 2025', slug: 'bseb-bihar-sakshamta-pariksha-ii-2025' },
-                  { title: 'Naval Dockyard Mumbai Apprentices Online Form 2025', slug: 'naval-dockyard-mumbai-apprentices-2025' },
-                  { title: 'UPSC CAPF Assistant Commandant Online Form 2025', slug: 'upsc-capf-assistant-commandant-2025' },
-                  { title: 'UPSSSC Mandi Parishad Sachiv Online Form 2025', slug: 'upsssc-mandi-parishad-sachiv-2025' },
-                  { title: 'UPSSSC Junior Analyst Drugs Online Form 2025', slug: 'upsssc-junior-analyst-drugs-2025' },
-                  { title: 'NTA UGC NET June 2025 Online Form', slug: 'nta-ugc-net-june-2025' },
-                  { title: 'MPPSC State Eligibility Test SET Online Form 2025 Extended', slug: 'mppsc-set-2025-extended' },
-                  { title: 'UPSSSC Junior Analyst Food Online Form 2025', slug: 'upsssc-junior-analyst-food-2025' },
-                  { title: 'Railway RPF Constable / Sub Inspector Online Form 2025', slug: 'railway-rpf-constable-si-2025' },
-                  { title: 'Jharkhand High Court Assistant Online Form 2025', slug: 'jharkhand-hc-assistant-2025' },
-                  { title: 'Rajasthan High Court Civil Judge Online Form 2025', slug: 'rajasthan-hc-civil-judge-2025' },
-                  { title: 'Army TGC 140 Online Form 2025', slug: 'army-tgc-140-2025' },
-                  { title: 'UPSC IES / ISS Online Form 2025', slug: 'upsc-ies-iss-2025' },
-                  { title: 'UPSC Combined Medical Services CMS Online Form 2025', slug: 'upsc-cms-2025' },
-                  { title: 'SSC CHSL 10+2 Online Form 2025', slug: 'ssc-chsl-10-2-2025' },
-                  { title: 'UPPSC Agriculture Services Online Form 2025', slug: 'uppsc-agriculture-services-2025' }
-                ].map((job, index) => (
-                  <li key={index} className="border-b border-gray-200 pb-1">
-                    <Link href={`/job/${job.slug}`} className="text-blue-600 hover:underline">
-                      {job.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <div className="text-center mt-4">
-                <Link href="/latest-jobs" className="text-blue-600 hover:underline font-semibold">
-                  View More
-                </Link>
-              </div>
+              {loading ? (
+                <div className="text-center py-8">
+                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                  <p className="mt-2 text-sm text-gray-600">Loading jobs...</p>
+                </div>
+              ) : error ? (
+                <div className="text-center py-8">
+                  <p className="text-red-600 text-sm">{error}</p>
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="mt-2 text-blue-600 hover:underline text-sm"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              ) : jobs.length > 0 ? (
+                <ul className="space-y-2 text-sm">
+                  {jobs.map((job) => (
+                    <li key={job.id} className="border-b border-gray-200 pb-1">
+                      <a
+                        href={job.apply_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline block"
+                      >
+                        {job.title}
+                      </a>
+                      {job.description && (
+                        <p className="text-gray-600 text-xs mt-1 truncate">
+                          {job.description}
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-gray-600 text-sm">No jobs available at the moment.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -234,7 +278,7 @@ export default function Home() {
       <footer className="bg-gray-800 text-white py-6 mt-8">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <p className="text-sm">
-            © {new Date().getFullYear()} sarkariresultgov.live All Rights Reserved.
+            © {new Date().getFullYear()} SarkariResultGov.live All Rights Reserved.
           </p>
           <p className="text-xs mt-1">
             Made with ❤️ for students and job seekers in India.
