@@ -24,6 +24,8 @@ export default function Home() {
         setLoading(true);
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}` + '/jobs/getAllJobs');
 
+        console.log('Fetching jobs from:', `${process.env.NEXT_PUBLIC_API_URL}`);
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
