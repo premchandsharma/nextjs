@@ -1,6 +1,6 @@
 // src/app/utils/firebase.js
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAnalytics, logEvent  } from "firebase/analytics";
+import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB2xebai97FQTqgzuQIoOOQYyQsUpndLmo",
