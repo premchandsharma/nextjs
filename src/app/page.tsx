@@ -33,7 +33,7 @@ export default function Home() {
         setError(null);
       } catch (err) {
         console.error("Error fetching data:", err);
-        setError("Failed to fetch data");
+        setError("Failed to fetch data"+`${error}`);
       } finally {
         setLoading(false);
       }
