@@ -4,20 +4,39 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface ApiData {
+  vimps_links: { id: number; title: string; url: string }[];
+  imp_links: { id: number; title: string; url: string }[];
   jobs: { id: number; title: string; url: string }[];
   results: { id: number; title: string; url: string }[];
   admit_cards: { id: number; title: string; url: string }[];
-  vimps_links: { id: number; title: string; url: string }[];
-  imp_links: { id: number; title: string; url: string }[];
+
+  naukri_forms: { id: number; title: string; url: string }[];
+  admissions: { id: number; title: string; url: string }[];
+  regular_forms: { id: number; title: string; url: string }[];
+  offline_forms: { id: number; title: string; url: string }[];
+  answer_keys: { id: number; title: string; url: string }[];
+  syllabus: { id: number; title: string; url: string }[];
+  sarkari_yojna: { id: number; title: string; url: string }[];
+  verification: { id: number; title: string; url: string }[];
+  upcoming: { id: number; title: string; url: string }[];
 }
 
 export default function Home() {
   const [data, setData] = useState<ApiData>({
+    vimps_links: [],
+    imp_links: [],
     jobs: [],
     results: [],
     admit_cards: [],
-    vimps_links: [],
-    imp_links: [],
+    naukri_forms: [],
+    admissions: [],
+    regular_forms: [],
+    offline_forms: [],
+    answer_keys: [],
+    syllabus: [],
+    sarkari_yojna: [],
+    verification: [],
+    upcoming: [],
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -136,12 +155,35 @@ export default function Home() {
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Results */}
+
+          {/* Latest Jobs */}
           <div className="bg-white rounded-lg shadow-md">
             <div className="bg-red-700 text-white text-center py-3 rounded-t-lg">
-              <h2 className="text-lg font-semibold">Result</h2>
+              <h2 className="text-lg font-semibold">LATEST JOBS</h2>
             </div>
-            <div className="p-4 max-h-96 overflow-y-auto">
+            <div className="p-4">
+              {loading ? (
+                <p className="text-center text-sm text-gray-600">Loading...</p>
+              ) : (
+                <ul className="space-y-2 text-sm">
+                  {data.jobs.map((job) => (
+                    <li key={job.id} className="border-b border-gray-200 pb-1">
+                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                        {job.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          {/* Results */}
+          <div className="bg-white rounded-lg shadow-md">
+            <div className="bg-green-700 text-white text-center py-3 rounded-t-lg">
+              <h2 className="text-lg font-semibold">RESULT</h2>
+            </div>
+            <div className="p-4">
               {loading ? (
                 <p className="text-center text-sm text-gray-600">Loading...</p>
               ) : (
@@ -160,10 +202,10 @@ export default function Home() {
 
           {/* Admit Cards */}
           <div className="bg-white rounded-lg shadow-md">
-            <div className="bg-green-700 text-white text-center py-3 rounded-t-lg">
-              <h2 className="text-lg font-semibold">Admit Card</h2>
+            <div className="bg-blue-700 text-white text-center py-3 rounded-t-lg">
+              <h2 className="text-lg font-semibold">ADMIT CARD</h2>
             </div>
-            <div className="p-4 max-h-96 overflow-y-auto">
+            <div className="p-4">
               {loading ? (
                 <p className="text-center text-sm text-gray-600">Loading...</p>
               ) : (
@@ -180,17 +222,17 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Latest Jobs */}
+          {/* Naukri Form */}
           <div className="bg-white rounded-lg shadow-md">
-            <div className="bg-blue-700 text-white text-center py-3 rounded-t-lg">
-              <h2 className="text-lg font-semibold">Latest Jobs</h2>
+            <div className="bg-red-700 text-white text-center py-3 rounded-t-lg">
+              <h2 className="text-lg font-semibold">NAUKRI FORM</h2>
             </div>
-            <div className="p-4 max-h-96 overflow-y-auto">
+            <div className="p-4">
               {loading ? (
                 <p className="text-center text-sm text-gray-600">Loading...</p>
               ) : (
                 <ul className="space-y-2 text-sm">
-                  {data.jobs.map((job) => (
+                  {data.naukri_forms.map((job) => (
                     <li key={job.id} className="border-b border-gray-200 pb-1">
                       <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
                         {job.title}
@@ -201,6 +243,183 @@ export default function Home() {
               )}
             </div>
           </div>
+
+          {/* Admission */}
+          <div className="bg-white rounded-lg shadow-md">
+            <div className="bg-green-700 text-white text-center py-3 rounded-t-lg">
+              <h2 className="text-lg font-semibold">ADMISSION</h2>
+            </div>
+            <div className="p-4">
+              {loading ? (
+                <p className="text-center text-sm text-gray-600">Loading...</p>
+              ) : (
+                <ul className="space-y-2 text-sm">
+                  {data.admissions.map((job) => (
+                    <li key={job.id} className="border-b border-gray-200 pb-1">
+                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                        {job.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          {/* Regular Form */}
+          <div className="bg-white rounded-lg shadow-md">
+            <div className="bg-blue-700 text-white text-center py-3 rounded-t-lg">
+              <h2 className="text-lg font-semibold">REGULAR FORM</h2>
+            </div>
+            <div className="p-4">
+              {loading ? (
+                <p className="text-center text-sm text-gray-600">Loading...</p>
+              ) : (
+                <ul className="space-y-2 text-sm">
+                  {data.regular_forms.map((job) => (
+                    <li key={job.id} className="border-b border-gray-200 pb-1">
+                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                        {job.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          {/* Offline Form */}
+          <div className="bg-white rounded-lg shadow-md">
+            <div className="bg-red-700 text-white text-center py-3 rounded-t-lg">
+              <h2 className="text-lg font-semibold">OFFLINE FORM</h2>
+            </div>
+            <div className="p-4">
+              {loading ? (
+                <p className="text-center text-sm text-gray-600">Loading...</p>
+              ) : (
+                <ul className="space-y-2 text-sm">
+                  {data.offline_forms.map((job) => (
+                    <li key={job.id} className="border-b border-gray-200 pb-1">
+                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                        {job.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          {/* Answer key */}
+          <div className="bg-white rounded-lg shadow-md">
+            <div className="bg-green-700 text-white text-center py-3 rounded-t-lg">
+              <h2 className="text-lg font-semibold">ANSWER KEY</h2>
+            </div>
+            <div className="p-4">
+              {loading ? (
+                <p className="text-center text-sm text-gray-600">Loading...</p>
+              ) : (
+                <ul className="space-y-2 text-sm">
+                  {data.answer_keys.map((job) => (
+                    <li key={job.id} className="border-b border-gray-200 pb-1">
+                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                        {job.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          {/* Syllabus */}
+          <div className="bg-white rounded-lg shadow-md">
+            <div className="bg-blue-700 text-white text-center py-3 rounded-t-lg">
+              <h2 className="text-lg font-semibold">SYLLABUS</h2>
+            </div>
+            <div className="p-4">
+              {loading ? (
+                <p className="text-center text-sm text-gray-600">Loading...</p>
+              ) : (
+                <ul className="space-y-2 text-sm">
+                  {data.syllabus.map((job) => (
+                    <li key={job.id} className="border-b border-gray-200 pb-1">
+                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                        {job.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          {/* Sarkari Yojana */}
+          <div className="bg-white rounded-lg shadow-md">
+            <div className="bg-red-700 text-white text-center py-3 rounded-t-lg">
+              <h2 className="text-lg font-semibold">SARKARI YOJANA</h2>
+            </div>
+            <div className="p-4">
+              {loading ? (
+                <p className="text-center text-sm text-gray-600">Loading...</p>
+              ) : (
+                <ul className="space-y-2 text-sm">
+                  {data.sarkari_yojna.map((job) => (
+                    <li key={job.id} className="border-b border-gray-200 pb-1">
+                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                        {job.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          {/* Verification */}
+          <div className="bg-white rounded-lg shadow-md">
+            <div className="bg-green-700 text-white text-center py-3 rounded-t-lg">
+              <h2 className="text-lg font-semibold">VERIFICATION</h2>
+            </div>
+            <div className="p-4">
+              {loading ? (
+                <p className="text-center text-sm text-gray-600">Loading...</p>
+              ) : (
+                <ul className="space-y-2 text-sm">
+                  {data.verification.map((job) => (
+                    <li key={job.id} className="border-b border-gray-200 pb-1">
+                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                        {job.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          {/* Upcoming */}
+          <div className="bg-white rounded-lg shadow-md">
+            <div className="bg-blue-700 text-white text-center py-3 rounded-t-lg">
+              <h2 className="text-lg font-semibold">UPCOMING</h2>
+            </div>
+            <div className="p-4">
+              {loading ? (
+                <p className="text-center text-sm text-gray-600">Loading...</p>
+              ) : (
+                <ul className="space-y-2 text-sm">
+                  {data.upcoming.map((job) => (
+                    <li key={job.id} className="border-b border-gray-200 pb-1">
+                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                        {job.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
         </div>
       </div>
 
