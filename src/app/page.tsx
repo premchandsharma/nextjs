@@ -52,7 +52,7 @@ export default function Home() {
         setError(null);
       } catch (err) {
         console.error("Error fetching data:", err);
-        setError("Failed to fetch data"+`${error}`);
+        setError("Failed to fetch data" + `${error}`);
       } finally {
         setLoading(false);
       }
@@ -87,16 +87,26 @@ export default function Home() {
       <nav className="bg-blue-900 text-white">
         <div className="max-w-6xl mx-auto">
           <ul className="flex flex-wrap justify-center">
-            {['Home', 'Latest Jobs', 'Results', 'Admit Card', 'Answer Key', 'Syllabus', 'Search', 'Contact Us'].map((item) => (
-              <li key={item}>
-                <Link
-                  href={`/${item.toLowerCase().replace(' ', '-')}`}
-                  className="block px-6 py-4 hover:bg-blue-800 transition-colors duration-200"
-                >
-                  {item}
-                </Link>
-              </li>
-            ))}
+            {['Home', 'Latest Jobs', 'Results', 'Admit Card', 'Answer Key', 'Syllabus', 'Search', 'Contact Us'].map((item) => {
+              const lower = item.toLowerCase().replace(' ', '-');
+              const internalSections = ['latest-jobs', 'results', 'admit-card', 'answer-key', 'syllabus'];
+              const href =
+                item === 'Home' ? '#top'
+                  : internalSections.includes(lower) ? `#${lower}`
+                    : `/${lower}`;
+
+              return (
+                <li key={item}>
+                  <Link
+                    href={href}
+                    className="block px-6 py-4 hover:bg-blue-800 transition-colors duration-200"
+                  >
+                    {item}
+                  </Link>
+                </li>
+              )
+            }
+            )}
           </ul>
         </div>
       </nav>
@@ -157,7 +167,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
           {/* Latest Jobs */}
-          <div className="bg-white rounded-lg shadow-md">
+          <div id="latest-jobs" className="bg-white rounded-lg shadow-md">
             <div className="bg-red-700 text-white text-center py-3 rounded-t-lg">
               <h2 className="text-lg font-semibold">LATEST JOBS</h2>
             </div>
@@ -179,7 +189,7 @@ export default function Home() {
           </div>
 
           {/* Results */}
-          <div className="bg-white rounded-lg shadow-md">
+          <div id="results" className="bg-white rounded-lg shadow-md">
             <div className="bg-green-700 text-white text-center py-3 rounded-t-lg">
               <h2 className="text-lg font-semibold">RESULT</h2>
             </div>
@@ -201,7 +211,7 @@ export default function Home() {
           </div>
 
           {/* Admit Cards */}
-          <div className="bg-white rounded-lg shadow-md">
+          <div id="admit-card" className="bg-white rounded-lg shadow-md">
             <div className="bg-blue-700 text-white text-center py-3 rounded-t-lg">
               <h2 className="text-lg font-semibold">ADMIT CARD</h2>
             </div>
@@ -311,7 +321,7 @@ export default function Home() {
           </div>
 
           {/* Answer key */}
-          <div className="bg-white rounded-lg shadow-md">
+          <div id="answer-key" className="bg-white rounded-lg shadow-md">
             <div className="bg-green-700 text-white text-center py-3 rounded-t-lg">
               <h2 className="text-lg font-semibold">ANSWER KEY</h2>
             </div>
@@ -333,7 +343,7 @@ export default function Home() {
           </div>
 
           {/* Syllabus */}
-          <div className="bg-white rounded-lg shadow-md">
+          <div id="syllabus" className="bg-white rounded-lg shadow-md">
             <div className="bg-blue-700 text-white text-center py-3 rounded-t-lg">
               <h2 className="text-lg font-semibold">SYLLABUS</h2>
             </div>
