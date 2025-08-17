@@ -17,15 +17,14 @@ async function getHtml(title: string) {
     return res.text();
 }
 
-interface PageProps {
-    params: { id: string };
-}
-
-export default async function DynamicPage({ params }: PageProps) {
-    const { id } = await params;   // 👈 await first
+export default async function DynamicPage({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}) {
+    const { id } = await params;
     const formattedId = id.replace(/-/g, " ");
     const html = await getHtml(formattedId);
-
 
     return (
         <div className="min-h-screen bg-gray-50">
