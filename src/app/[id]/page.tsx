@@ -23,7 +23,28 @@ export default async function DynamicPage({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params;
-    const formattedId = id.replace(/-/g, " ");
+
+    function urlDecode(text: string): string {
+        if (!text) return text;
+
+        const decodeMap: { [key: string]: string } = {
+            "%20": " ",
+            "%2F": "/",
+            "%2B": "+",
+            "%7C": "|",
+            "%2C": ",",
+            "%3A": ":",
+            "%26": "&",
+            "%2D": "-",
+            "%E2%80%93": "–", // en dash
+        };
+
+        // Use regex to replace all encoded values in one pass
+        return text.replace(/%20|%2F|%2B|%7C|%2C|%3A|%26|%2D|%E2%80%93/g, match => decodeMap[match]);
+    }
+
+    const formattedId = urlDecode(id);
+
     const html = await getHtml(formattedId);
 
     return (
