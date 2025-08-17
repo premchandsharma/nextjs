@@ -4,22 +4,26 @@ import Image from "next/image";
 import Link from "next/link";
 
 async function getHtml(title: string) {
-  const res = await fetch("https://api.sarkariresultgov.live/search", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ title }),
-    cache: "no-store",
-  });
+    const res = await fetch("https://api.sarkariresultgov.live/search", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title }),
+        cache: "no-store",
+    });
 
-  if (!res.ok) throw new Error("Failed to fetch HTML");
-  return res.text();
+    if (!res.ok) throw new Error("Failed to fetch HTML");
+    return res.text();
 }
 
-export default async function DynamicPage({ params }: { params: { id: string } }) {
-    const formattedId = params.id.replace(/-/g, " ");
+interface PageProps {
+    params: { id: string };
+}
 
+export default async function DynamicPage({ params }: PageProps) {
+    const { id } = await params;   // 👈 await first
+    const formattedId = id.replace(/-/g, " ");
     const html = await getHtml(formattedId);
 
 
