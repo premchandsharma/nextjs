@@ -1,64 +1,47 @@
-"use client"
-import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 interface ApiData {
-  vimps_links: { id: number; title: string; url: string }[];
-  imp_links: { id: number; title: string; url: string }[];
-  jobs: { id: number; title: string; url: string }[];
-  results: { id: number; title: string; url: string }[];
-  admit_cards: { id: number; title: string; url: string }[];
-
-  naukri_forms: { id: number; title: string; url: string }[];
-  admissions: { id: number; title: string; url: string }[];
-  regular_forms: { id: number; title: string; url: string }[];
-  offline_forms: { id: number; title: string; url: string }[];
-  answer_keys: { id: number; title: string; url: string }[];
-  syllabus: { id: number; title: string; url: string }[];
-  sarkari_yojna: { id: number; title: string; url: string }[];
-  verification: { id: number; title: string; url: string }[];
-  upcoming: { id: number; title: string; url: string }[];
+  vimps_links: { id: number; title: string;}[];
+  imp_links: { id: number; title: string;}[];
+  jobs: { id: number; title: string;}[];
+  results: { id: number; title: string;}[];
+  admit_cards: { id: number; title: string;}[];
+  naukri_forms: { id: number; title: string;}[];
+  admissions: { id: number; title: string;}[];
+  regular_forms: { id: number; title: string;}[];
+  offline_forms: { id: number; title: string;}[];
+  answer_keys: { id: number; title: string;}[];
+  syllabus: { id: number; title: string;}[];
+  sarkari_yojna: { id: number; title: string;}[];
+  verification: { id: number; title: string;}[];
+  upcoming: { id: number; title: string;}[];
 }
 
-export default function Home() {
-  const [data, setData] = useState<ApiData>({
-    vimps_links: [],
-    imp_links: [],
-    jobs: [],
-    results: [],
-    admit_cards: [],
-    naukri_forms: [],
-    admissions: [],
-    regular_forms: [],
-    offline_forms: [],
-    answer_keys: [],
-    syllabus: [],
-    sarkari_yojna: [],
-    verification: [],
-    upcoming: [],
+// ✅ fetch function runs on the server
+async function getData(): Promise<ApiData> {
+  const res = await fetch("https://api.sarkariresultgov.live/getAllData", {
+    cache: "no-store" // or "force-cache" / { next: { revalidate: 60 } }
   });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchAllData = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getAllData`);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const result: ApiData = await response.json();
-        setData(result);
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError("Failed to fetch data" + `${error}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchAllData();
-  }, []);
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+export default async function Home() {
+
+  const data = await getData();
+
+  function slugify(text: string) {
+    return text
+      .trim()
+      .replace(/\s+/g, "-")        // Replace spaces with -
+      .replace(/[^\w\-]+/g, "")    // Remove all non-word chars
+      .replace(/\-\-+/g, "-");     // Replace multiple - with single -
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -125,7 +108,7 @@ export default function Home() {
 
         {/* App Links */}
         <div className="text-center mb-4 text-sm">
-          <Link href="https://www.instagram.com/sarkariresultgov.live/" className="text-blue-600 hover:underline mx-2" target="_blank">Sarkari Result Instagram</Link> ||
+          <Link href="https://www.instagram.com/sarkariresultgov.live/" className="text-blue-600 hover:underline mx-2" target="_blank" rel="noopener noreferrer">Sarkari Result Instagram</Link> ||
           <Link href="https://t.me/sarkariresultpath" className="text-blue-600 hover:underline mx-2" target="_blank">Sarkari Result Telegram</Link>
         </div>
 
@@ -133,10 +116,10 @@ export default function Home() {
         <div className="bg-yellow-100 border border-yellow-300 rounded p-2 mb-6">
           <div className="animate-pulse text-center text-sm">
             {data.vimps_links.map((item, idx) => (
-              <React.Fragment key={item.id}>
-                <Link href={item.url} target="_blank" className="text-blue-600 hover:underline mx-2">{item.title}</Link>
+              <span key={item.id}>
+                <Link href={`/${slugify(item.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline mx-2">{item.title}</Link>
                 {idx !== data.vimps_links.length - 1 && " || "}
-              </React.Fragment>
+              </span>
             ))}
           </div>
         </div>
@@ -155,7 +138,7 @@ export default function Home() {
               'bg-teal-500'
             ];
             const color = colors[index % colors.length];
-            return <Link key={item.id} href={item.url} target="_blank">
+            return <Link key={item.id} href={`/${slugify(item.title)}`} target="_blank">
               <div className={`${color} text-white rounded-lg p-4 text-center hover:opacity-90 transition-opacity cursor-pointer`}>
                 <h3 className="font-semibold text-sm">{item.title}</h3>
               </div>
@@ -172,19 +155,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold">LATEST JOBS</h2>
             </div>
             <div className="p-4">
-              {loading ? (
-                <p className="text-center text-sm text-gray-600">Loading...</p>
-              ) : (
                 <ul className="space-y-2 text-sm">
                   {data.jobs.map((job) => (
                     <li key={job.id} className="border-b border-gray-200 pb-1">
-                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                      <Link href={`/${slugify(job.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                         {job.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
             </div>
           </div>
 
@@ -194,19 +173,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold">RESULT</h2>
             </div>
             <div className="p-4">
-              {loading ? (
-                <p className="text-center text-sm text-gray-600">Loading...</p>
-              ) : (
                 <ul className="space-y-2 text-sm">
                   {data.results.map((result) => (
                     <li key={result.id} className="border-b border-gray-200 pb-1">
-                      <Link href={result.url} target="_blank" className="text-blue-600 hover:underline">
+                      <Link href={`/${slugify(result.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                         {result.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
             </div>
           </div>
 
@@ -216,19 +191,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold">ADMIT CARD</h2>
             </div>
             <div className="p-4">
-              {loading ? (
-                <p className="text-center text-sm text-gray-600">Loading...</p>
-              ) : (
                 <ul className="space-y-2 text-sm">
                   {data.admit_cards.map((admit) => (
                     <li key={admit.id} className="border-b border-gray-200 pb-1">
-                      <Link href={admit.url} target="_blank" className="text-blue-600 hover:underline">
+                      <Link href={`/${slugify(admit.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                         {admit.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
             </div>
           </div>
 
@@ -238,19 +209,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold">NAUKRI FORM</h2>
             </div>
             <div className="p-4">
-              {loading ? (
-                <p className="text-center text-sm text-gray-600">Loading...</p>
-              ) : (
                 <ul className="space-y-2 text-sm">
                   {data.naukri_forms.map((job) => (
                     <li key={job.id} className="border-b border-gray-200 pb-1">
-                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                      <Link href={`/${slugify(job.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                         {job.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
             </div>
           </div>
 
@@ -260,19 +227,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold">ADMISSION</h2>
             </div>
             <div className="p-4">
-              {loading ? (
-                <p className="text-center text-sm text-gray-600">Loading...</p>
-              ) : (
                 <ul className="space-y-2 text-sm">
                   {data.admissions.map((job) => (
                     <li key={job.id} className="border-b border-gray-200 pb-1">
-                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                      <Link href={`/${slugify(job.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                         {job.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
             </div>
           </div>
 
@@ -282,19 +245,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold">REGULAR FORM</h2>
             </div>
             <div className="p-4">
-              {loading ? (
-                <p className="text-center text-sm text-gray-600">Loading...</p>
-              ) : (
                 <ul className="space-y-2 text-sm">
                   {data.regular_forms.map((job) => (
                     <li key={job.id} className="border-b border-gray-200 pb-1">
-                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                      <Link href={`/${slugify(job.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                         {job.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
             </div>
           </div>
 
@@ -304,19 +263,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold">OFFLINE FORM</h2>
             </div>
             <div className="p-4">
-              {loading ? (
-                <p className="text-center text-sm text-gray-600">Loading...</p>
-              ) : (
                 <ul className="space-y-2 text-sm">
                   {data.offline_forms.map((job) => (
                     <li key={job.id} className="border-b border-gray-200 pb-1">
-                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                      <Link href={`/${slugify(job.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                         {job.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
             </div>
           </div>
 
@@ -326,19 +281,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold">ANSWER KEY</h2>
             </div>
             <div className="p-4">
-              {loading ? (
-                <p className="text-center text-sm text-gray-600">Loading...</p>
-              ) : (
                 <ul className="space-y-2 text-sm">
                   {data.answer_keys.map((job) => (
                     <li key={job.id} className="border-b border-gray-200 pb-1">
-                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                      <Link href={`/${slugify(job.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                         {job.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
             </div>
           </div>
 
@@ -348,19 +299,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold">SYLLABUS</h2>
             </div>
             <div className="p-4">
-              {loading ? (
-                <p className="text-center text-sm text-gray-600">Loading...</p>
-              ) : (
                 <ul className="space-y-2 text-sm">
                   {data.syllabus.map((job) => (
                     <li key={job.id} className="border-b border-gray-200 pb-1">
-                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                      <Link href={`/${slugify(job.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                         {job.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
             </div>
           </div>
 
@@ -370,19 +317,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold">SARKARI YOJANA</h2>
             </div>
             <div className="p-4">
-              {loading ? (
-                <p className="text-center text-sm text-gray-600">Loading...</p>
-              ) : (
                 <ul className="space-y-2 text-sm">
                   {data.sarkari_yojna.map((job) => (
                     <li key={job.id} className="border-b border-gray-200 pb-1">
-                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                      <Link href={`/${slugify(job.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                         {job.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
             </div>
           </div>
 
@@ -392,19 +335,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold">VERIFICATION</h2>
             </div>
             <div className="p-4">
-              {loading ? (
-                <p className="text-center text-sm text-gray-600">Loading...</p>
-              ) : (
                 <ul className="space-y-2 text-sm">
                   {data.verification.map((job) => (
                     <li key={job.id} className="border-b border-gray-200 pb-1">
-                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                      <Link href={`/${slugify(job.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                         {job.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
             </div>
           </div>
 
@@ -414,19 +353,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold">UPCOMING</h2>
             </div>
             <div className="p-4">
-              {loading ? (
-                <p className="text-center text-sm text-gray-600">Loading...</p>
-              ) : (
                 <ul className="space-y-2 text-sm">
                   {data.upcoming.map((job) => (
                     <li key={job.id} className="border-b border-gray-200 pb-1">
-                      <Link href={job.url} target="_blank" className="text-blue-600 hover:underline">
+                      <Link href={`/${slugify(job.title)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                         {job.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
             </div>
           </div>
 
@@ -435,13 +370,43 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-6 mt-8">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-sm">
-            © {new Date().getFullYear()} SarkariResultGov.live All Rights Reserved.
-          </p>
-          <p className="text-xs mt-1">Made with ❤️ for students and job seekers in India.</p>
-        </div>
-      </footer>
+                <div className="max-w-6xl mx-auto px-4">
+                    <div className="flex flex-col md:flex-row justify-between gap-6">
+                        {/* Left side */}
+                        <div className="md:w-1/2">
+                            <h3 className="text-lg font-semibold mb-3">SarkariResultGov.live</h3>
+
+                            <p className="text-xs mt-1">Made with ❤️ for students and job seekers in India.</p>
+                        </div>
+
+                        {/* Right side */}
+                        <div className="flex flex-col md:flex-row gap-18 md:text-right">
+                            <div>
+                                <h4 className="text-base font-semibold mb-3">Quick Links</h4>
+                                <ul className="space-y-1 text-sm">
+                                    <li><Link href="/about-us" className="text-gray-300 hover:text-white">About Us</Link></li>
+                                    <li><Link href="/contact-us" className="text-gray-300 hover:text-white">Contact Us</Link></li>
+                                    <li><Link href="/privacy-policy" className="text-gray-300 hover:text-white">Privacy Policy</Link></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 className="text-base font-semibold mb-3">Follow Us</h4>
+                                <ul className="space-y-1 text-sm">
+                                    <li><Link href="/about-us" className="text-gray-300 hover:text-white">Facebook</Link></li>
+                                    <li><Link href="/contact-us" className="text-gray-300 hover:text-white">Twitter</Link></li>
+                                    <li><Link href="/privacy-policy" className="text-gray-300 hover:text-white">Instagram</Link></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="border-t border-gray-700 mt-6 pt-4 text-center">
+                        <p className="text-sm text-gray-300">
+                            © {new Date().getFullYear()} SarkariResultGov.live | All rights reserved
+                        </p>
+                    </div>
+                </div>
+            </footer>
     </div>
   );
 }
