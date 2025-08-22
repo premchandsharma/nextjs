@@ -27,7 +27,7 @@ export default function LinksPage() {
     },
     {
       name: 'Telegram',
-      url: 'https://t.me/sarkariresultpath',
+      url: 'https://t.me/sarkariresultgovlive ',
       icon: <MessageCircle size={24} />,
       gradient: 'from-blue-500 to-blue-600',
       description: 'Join our community'
