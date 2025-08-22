@@ -119,7 +119,8 @@ export default async function Home() {
         {/* App Links */}
         <div className="text-center mb-4 text-sm">
           <Link href="https://www.instagram.com/sarkariresultgov.live/" className="text-blue-600 hover:underline mx-2" target="_blank" rel="noopener noreferrer">Sarkari Result Instagram</Link> ||
-          <Link href="https://t.me/sarkariresultpath" className="text-blue-600 hover:underline mx-2" target="_blank">Sarkari Result Telegram</Link>
+          <Link href="https://www.youtube.com/@sarkariresultgov" className="text-blue-600 hover:underline mx-2" target="_blank">Sarkari Result Youtube</Link>||
+          <Link href="/links" className="text-blue-600 hover:underline mx-2" target="_blank">All Links</Link>
         </div>
 
         {/* Marquee Announcements from vimps_links */}
